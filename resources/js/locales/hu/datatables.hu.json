@@ -1,0 +1,41 @@
+{
+  "sEmptyTable": "Nincs rendelkezésre álló adat",
+  "sInfo": "<strong>_START_</strong> - <strong>_END_</strong>, összesen: <strong>_TOTAL_</strong>",
+  "sInfoEmpty": "Nulla találat",
+  "sInfoFiltered": "(_MAX_ összes rekord közül szűrve)",
+  "sInfoPostFix": "",
+  "sInfoThousands": " ",
+  "sLengthMenu": "_MENU_",
+  "sLoadingRecords": "Betöltés...",
+  "sProcessing": "Feldolgozás...",
+  "sSearch": "_INPUT_",
+  "sSearchPlaceholder": "Keresés..",
+  "sZeroRecords": "Nincs a keresésnek megfelelő találat",
+  "oPaginate": {
+    "sFirst": "<i class=\"fa fa-angle-double-left\"></i>",
+    "sPrevious": "<i class=\"fa fa-angle-left\"></i>",
+    "sNext": "<i class=\"fa fa-angle-right\"></i>",
+    "sLast": "<i class=\"fa fa-angle-double-right\"></i>"
+  },
+  "oAria": {
+    "sSortAscending": ": aktiválja a növekvő rendezéshez",
+    "sSortDescending": ": aktiválja a csökkenő rendezéshez"
+  },
+  "select": {
+    "rows": {
+      "0": "",
+      "1": "1 sor kiválasztva",
+      "_": "%d sor kiválasztva"
+    }
+  },
+  "buttons": {
+    "print": "Nyomtatás",
+    "colvis": "Oszlopok",
+    "copy": "Másolás",
+    "copyTitle": "Vágólapra másolás",
+    "copySuccess": {
+      "1": "1 sor másolva",
+      "_": "%d sor másolva"
+    }
+  }
+}
