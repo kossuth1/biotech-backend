@@ -55,11 +55,6 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        dd($product->tags->map(function ($tag) {
-            dd($tag);
-            $tag->translate('en')->name;
-        }));
-
         $locales = Locale::all();
         return view('admin.products.edit', ['product' => $product, 'locales' => $locales]);
     }
