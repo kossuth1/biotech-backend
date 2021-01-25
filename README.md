@@ -6,7 +6,7 @@ PHP >= 7.2.5
  - .env fájl létrehozása a gyökérben, DB adatok kitöltése
  - ```php artisan migrate```
  - ```php artisan db:seed```
- - ```php artisan storage:link
+ - ```php artisan storage:link```
  - ```npm install```
  - ```npm run prod```
 
