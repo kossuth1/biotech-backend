@@ -3,9 +3,10 @@ PHP >= 7.2.5
 
 ## Telepítés menete
  - ```composer install```
- - .env fájl létrehozása a gyökérben, DB adatokat kitöltése
+ - .env fájl létrehozása a gyökérben, DB adatok kitöltése
  - ```php artisan migrate```
  - ```php artisan db:seed```
+ - ```php artisan storage:link
  - ```npm install```
  - ```npm run prod```
 
