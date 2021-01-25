@@ -1,10 +1,14 @@
-<section class="card shadow">
-    <div class="card-header">
-        {{ $header }}
-    </div>
-    <div class="card-body">
-        {{ $slot }}
-    </div>
-    <div class="card-footer">
-        {{ $footer }}
-    </div>
+<section class="card shadow {{ $className ?? '' }}">
+    @isset($header)
+        <div class="card-header">
+            {{ $header }}
+        </div>
+    @endisset
+        <div class="card-body">
+            {{ $slot }}
+        </div>
+    @isset($footer)
+        <div class="card-footer">
+            {{ $footer }}
+        </div>
+    @endisset

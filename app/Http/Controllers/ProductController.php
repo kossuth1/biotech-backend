@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Locale;
 use Illuminate\Http\Request;
+use App\Http\Requests\UploadImageRequest;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 
 class ProductController extends Controller
 {
@@ -36,9 +39,10 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        Product::create($request->all());
+        $product = Product::create($request->validated());
+        $product->images()->createMany($request->images ?? []);
 
         return success(route('products.index'));
     }
@@ -51,6 +55,11 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
+        dd($product->tags->map(function ($tag) {
+            dd($tag);
+            $tag->translate('en')->name;
+        }));
+
         $locales = Locale::all();
         return view('admin.products.edit', ['product' => $product, 'locales' => $locales]);
     }
@@ -62,9 +71,18 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(UpdateProductRequest $request, Product $product)
     {
-        $product->update($request->all());
+        $images = $product->images()->find($request->delete) ?: [];
+
+        foreach ($images as $image) {
+            $image->delete();
+        }
+
+        $product->tags()->createMany($request->tags);
+
+        $product->images()->createMany($request->images ?? []);
+        $product->update($request->validated());
         return success(route('products.edit', $product->id));
     }
 
@@ -80,6 +98,16 @@ class ProductController extends Controller
         $product->delete();
 
         return response('', 200);
+    }
+
+    public function uploadImage(UploadImageRequest $request)
+    {
+        $image = $request->validated()['file'] ?? null;
+        $path = $image->store('public/products');
+        $segments = explode('/', $path);
+        $fileName = end($segments);
+
+        return response()->json(['filename' => $fileName]);
     }
 
     public function getProductsTableData()

@@ -1,5 +1,6 @@
 require('./bootstrap');
 import Swal from 'sweetalert2';
+import 'jquery-datetimepicker';
 
 // import 'select2/dist/js/i18n/hu.js';
 import datatablesLang from './locales/hu/datatables.hu.json';
@@ -12,6 +13,13 @@ $.extend($.fn.dataTable.defaults, {
   lengthSelect: 'form-control form-control-sm',
   language: datatablesLang,
 });
+
+$.datetimepicker.setLocale('hu');
+$.datetimepicker.defaults = {
+  format: 'y-m-d H:i',
+  dayofWeekStart: 1,
+  step: 15,
+};
 
 $(() => {
   $.fn.select2.defaults.set('language', 'hu');

@@ -19,4 +19,5 @@ Route::get('/', function () {
 });
 
 Route::get('products/get-products-table-data', [ProductController::class, 'getProductsTableData'])->name('products.getProductsTableData');
+Route::post('products/upload-image', [ProductController::class, 'uploadImage'])->name('products.uploadImage');
 Route::resource('products', ProductController::class)->except('show');

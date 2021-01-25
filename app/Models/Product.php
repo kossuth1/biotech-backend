@@ -23,6 +23,19 @@ class Product extends Model implements TranslatableContract
         'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($product) {
+            foreach ($product->images as $image) {
+                $image->delete();
+            }
+
+            $product->tags()->delete();
+        });
+    }
+
 
     public function images()
     {
@@ -36,11 +49,11 @@ class Product extends Model implements TranslatableContract
 
     public function getPublicFromAttribute($value)
     {
-        return date('Y-m-d\TH:i', strtotime($value));
+        return date('Y-m-d H:i', strtotime($value));
     }
 
     public function getPublicToAttribute($value)
     {
-        return date('Y-m-d\TH:i', strtotime($value));
+        return date('Y-m-d H:i', strtotime($value));
     }
 }
