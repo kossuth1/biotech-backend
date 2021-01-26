@@ -11,24 +11,31 @@
 
 <div class="tab-content p-3">
     @foreach ($locales as $i => $locale)
-    <div class="tab-pane fade show {{ $loop->first ? 'active' : '' }}" id="locale_{{ $i }}">    
-        <div class="form-group">
-            <label>Termék neve ({{ $locale['name'] }})</label>
-            <input type="text" name="{{ $locale['id'] }}[name]" form="product-form" value="{{ old($locale['id'] . '.name') ?? ($product ? $product->translate($locale['id'])->name : '') }}" class="form-control" required />
+        <div class="tab-pane fade show {{ $loop->first ? 'active' : '' }}" id="locale_{{ $i }}">    
+            <div class="form-group">
+                <label>Termék neve ({{ $locale['name'] }})</label>
+                <input type="text" name="{{ $locale['id'] }}[name]" form="product-form" value="{{ old($locale['id'] . '.name') ?? ($product ? $product->translate($locale['id'])->name : '') }}" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label>Leírás ({{ $locale['name'] }})</label>
+                <textarea type="text" name="{{ $locale['id'] }}[description]" form="product-form" class="form-control" rows="5" js-product-description required>
+                    {{ old($locale['id'] . '.description') ?? ($product ? optional($product)->translate($locale['id'])->description : '') }}
+                </textarea>
+            </div>  
+            <div class="form-group">
+                <label>Címkék</label>
+                <select class="form-control" name="tags[][{{ $locale['id'] }}][name]" id="tags_{{ $locale['id'] }}" form="product-form" multiple js-product-tags>
+                    @foreach (optional($product)->tags ?? [] as $tag)
+                        @php
+                            $tagName = optional($tag->translate($locale['id']))->name;
+                        @endphp
+                        @if ($tagName) <option selected value="{{ $tag->id }}">{{ $tagName }}</option> @endif
+                    @endforeach
+                </select>
+            </div>    
         </div>
-        <div class="form-group">
-            <label>Leírás ({{ $locale['name'] }})</label>
-            <textarea type="text" name="{{ $locale['id'] }}[description]" form="product-form" class="form-control" rows="5" js-product-description required>
-                {{ old($locale['id'] . '.description') ?? ($product ? optional($product)->translate($locale['id'])->description : '') }}
-            </textarea>
-        </div>  
-        <div class="form-group">
-            <label>Címkék</label>
-            <select class="form-control" name="tags[][{{ $locale['id'] }}][name]" form="product-form" value="{{ old('tags') ?? ($product ? $product->tags->implode('name', ',') : '') }}" multiple js-product-tags></select>
-        </div>    
-    </div>
     @endforeach
-    <div class="card-body">
+    <div class="card-body p-0">
         <x-image-upload
             name="images"
             :url="route('products.uploadImage')"

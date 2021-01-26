@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Locale;
-use Illuminate\Http\Request;
 use App\Http\Requests\UploadImageRequest;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use Illuminate\Support\Arr;;
+
+use App\Models\ProductTag;
+
+
 
 class ProductController extends Controller
 {
@@ -68,13 +72,31 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        $images = $product->images()->find($request->delete) ?: [];
+        $imagesToDelete = $product->images()->find($request->delete) ?: [];
 
-        foreach ($images as $image) {
+        foreach ($imagesToDelete as $image) {
             $image->delete();
         }
 
-        $product->tags()->createMany($request->tags);
+        $tags = $request->tags ?? [];
+
+        $tagIds = Arr::flatten($tags) ?? [];
+        foreach ($product->tags as $tag) {
+            if (!in_array($tag->id, $tagIds)) {
+                $tag->delete();
+            }
+        }
+
+
+        foreach ($tags as $tag) {
+            $tagId = Arr::flatten($tag)[0];
+            if (is_numeric($tagId)) {
+                $tag = ProductTag::find($tagId);
+                $tag->product()->associate($product);
+            } else {
+                $product->tags()->create($tag);
+            }
+        }
 
         $product->images()->createMany($request->images ?? []);
         $product->update($request->validated());
@@ -89,7 +111,6 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $product->tags()->delete();
         $product->delete();
 
         return response('', 200);
